@@ -1,0 +1,97 @@
+/* Paleta de colores médicos */
+:root {
+    --medical-primary: #2a5c8d;       /* Azul médico principal */
+    --medical-secondary: #4a90e2;    /* Azul más claro */
+    --medical-accent: #e74c3c;       /* Rojo para elementos importantes */
+    --medical-light: #f8f9fa;        /* Fondo claro */
+    --medical-dark: #343a40;         /* Texto oscuro */
+    --medical-gray: #95a5a6;         /* Gris neutro */
+}
+
+/* Estilos generales */
+body.medical-bg {
+    background-color: #e8f4f8;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+}
+
+/* Tarjeta de login */
+.medical-card {
+    border-radius: 12px;
+    border: none;
+    overflow: hidden;
+}
+
+.medical-card .card-body {
+    padding: 2.5rem;
+}
+
+.medical-title {
+    color: var(--medical-primary);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Icono médico */
+.medical-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color: rgba(42, 92, 141, 0.1);
+    border-radius: 50%;
+}
+
+/* Campos del formulario */
+.medical-label {
+    color: var(--medical-primary);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.medical-input {
+    padding: 12px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.medical-input:focus {
+    border-color: var(--medical-secondary);
+    box-shadow: 0 0 0 0.25rem rgba(74, 144, 226, 0.25);
+}
+
+/* Botón de acceso */
+.medical-btn {
+    background-color: var(--medical-primary);
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.medical-btn:hover {
+    background-color: var(--medical-secondary);
+    transform: translateY(-2px);
+}
+
+/* Enlaces */
+.medical-link {
+    color: var(--medical-accent);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.medical-link:hover {
+    text-decoration: underline;
+    color: #c0392b;
+}

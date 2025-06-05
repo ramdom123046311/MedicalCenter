@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedicalCenter - Inicio de Sesión</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Nuestros estilos -->
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body class="medical-bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card medical-card shadow-lg">
+                    <div class="card-body p-5">
+                        <!-- Logo y título -->
+                        <div class="text-center mb-4">
+                            <div class="medical-icon mb-3">
+                                <span class="material-icons" style="font-size: 3rem; color: #2a5c8d;">medical_services</span>
+                            </div>
+                            <h2 class="card-title medical-title">MedicalCenter</h2>
+                            <p class="text-muted">Inicio de sesión para personal autorizado</p>
+                        </div>
+
+         <!-- Formulario -->
+<form class="login-form" action="dashboard.html" method="GET">
+    <!-- Campo RFC -->
+    <div class="mb-3">
+        <label for="rfc" class="form-label medical-label">
+            <span class="material-icons me-2">badge</span>RFC
+        </label>
+        <input type="text" class="form-control medical-input" id="rfc" placeholder="Ingrese su RFC" required>
+    </div>
+    
+    <!-- Campo Contraseña -->
+    <div class="mb-4">
+        <label for="password" class="form-label medical-label">
+            <span class="material-icons me-2">lock</span>Contraseña
+        </label>
+        <input type="password" class="form-control medical-input" id="password" placeholder="Ingrese su contraseña" required>
+    </div>
+    
+    <!-- Botón de acceso -->
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn medical-btn">
+            <span class="material-icons me-2">login</span>Iniciar Sesión
+        </button>
+    </div>
+</form>
+
+                        <!-- Enlace de ayuda -->
+                        <div class="text-center mt-4">
+                            <p class="small text-muted">
+                                ¿Problemas para ingresar? 
+                                <a href="#" class="medical-link">Contacte al administrador</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
