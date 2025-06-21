@@ -27,7 +27,8 @@
                         </div>
 
          <!-- Formulario -->
-<form class="login-form" action="dashboard.html" method="GET">
+<form class="login-form" action="{{ url_for('dashboard') }}" method="GET">
+
     <!-- Campo RFC -->
     <div class="mb-3">
         <label for="rfc" class="form-label medical-label">
