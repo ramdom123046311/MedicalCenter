@@ -166,3 +166,124 @@ body {
     font-size: 1.1rem;
     font-weight: bold;
 }
+/* Estilos para el modal de agendar cita */
+.medical-modal-header {
+    background-color: var(--medical-primary);
+    color: white;
+    border-bottom: none;
+}
+
+.medical-modal-header .btn-close {
+    filter: invert(1);
+}
+
+.medical-form-section-title {
+    color: var(--medical-primary);
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.medical-patient-info {
+    background-color: rgba(42, 92, 141, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--medical-secondary);
+}
+
+/* Ajustes para inputs en el modal */
+.modal-content .form-control, 
+.modal-content .form-select {
+    border-radius: 6px;
+    padding: 10px 15px;
+}
+
+.modal-content .form-control:focus, 
+.modal-content .form-select:focus {
+    border-color: var(--medical-secondary);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+/* Añade estos estilos al final de tu archivo CSS */
+
+/* Mejoras para el header */
+.medical-search {
+    min-width: 250px; /* Ancho mínimo para la barra de búsqueda */
+}
+
+/* Ajustes para responsive */
+@media (max-width: 768px) {
+    .medical-search {
+        width: 100%;
+    }
+    
+    .medical-main {
+        padding: 1rem;
+    }
+}
+
+/* Mejoras para las cards de citas */
+.medical-appointment {
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+}
+
+.medical-appointment:hover {
+    background-color: rgba(42, 92, 141, 0.03);
+}
+
+.appointment-header {
+    margin-bottom: 1rem;
+}
+
+.appointment-header h5 {
+    color: var(--medical-dark);
+    margin-bottom: 0.5rem;
+}
+
+.appointment-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Mejoras para los badges */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.bg-primary {
+    background-color: var(--medical-primary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--medical-gray) !important;
+}
+/* Estilos para los nuevos modales */
+.medical-input-plain {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    cursor: not-allowed;
+}
+
+.medical-citas-list .list-group-item {
+    padding: 1rem;
+    border-left: 3px solid transparent;
+    transition: all 0.3s;
+}
+
+.medical-citas-list .list-group-item:hover {
+    background-color: rgba(42, 92, 141, 0.05);
+    border-left-color: var(--medical-primary);
+}
+
+.medical-citas-list .form-check-label {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Estilo para la confirmación de cancelación */
+#confirmacionCancelacion {
+    border-left: 4px solid #e74c3c;
+}

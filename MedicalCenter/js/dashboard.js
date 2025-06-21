@@ -22,3 +22,26 @@ setInterval(updateClock, 1000);
 
 // Inicializar el reloj al cargar la página
 document.addEventListener('DOMContentLoaded', updateClock);
+
+// Funcionalidad para el modal de cancelar cita
+document.addEventListener('DOMContentLoaded', function() {
+    const btnSeleccionarCancelar = document.getElementById('btnSeleccionarCancelar');
+    const confirmacionCancelacion = document.getElementById('confirmacionCancelacion');
+    
+    if(btnSeleccionarCancelar) {
+        btnSeleccionarCancelar.addEventListener('click', function() {
+            // Ocultar botón de selección y mostrar confirmación
+            this.style.display = 'none';
+            confirmacionCancelacion.style.display = 'block';
+        });
+    }
+    
+    // Configurar los botones de editar cita
+    document.querySelectorAll('.btn-editar-cita').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const citaId = this.getAttribute('data-cita-id');
+            // Aquí iría la lógica para cargar los datos de la cita
+            console.log('Editando cita ID:', citaId);
+        });
+    });
+});
