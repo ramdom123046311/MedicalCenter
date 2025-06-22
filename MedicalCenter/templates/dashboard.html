@@ -1,457 +1,653 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MedicalCenter - Dashboard</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Google Icons -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
     <!-- Font Awesome para iconos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <!-- Nuestros estilos -->
-    <link rel="stylesheet" href="../css/dashboard.css">
-</head>
-<body>
+    <link rel="stylesheet" href="../css/dashboard.css" />
+  </head>
+  <body>
     <div class="dashboard-container">
-        <!-- Barra superior -->
-        <nav class="navbar medical-navbar">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <i class="fas fa-clinic-medical me-2"></i>
-                    <span class="fw-bold">MedicalCenter</span>
-                </a>
-                <div class="d-flex align-items-center">
-                    <div id="live-clock" class="text-white me-3"></div>
-                    <div class="dropdown">
-                        <button class="btn btn-medical dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-1"></i>
-                            Usuario
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Perfil</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Configuración</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Contenido principal -->
-       <!-- Contenido principal -->
+      <!-- Barra superior -->
+      <nav class="navbar medical-navbar">
         <div class="container-fluid">
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3 col-lg-2 medical-sidebar">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="../html/dashboard.html">
-                                <i class="fas fa-calendar-check me-2"></i>Citas
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../html/pacientes.html">
-                                <i class="fas fa-user-injured me-2"></i>Pacientes
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="../html/medicos.html">
-                                <i class="fas fa-user-md me-2"></i>Médicos
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-file-medical me-2"></i>Expedientes
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="fas fa-chart-bar me-2"></i>Reportes
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Main Content -->
-                <div class="col-md-9 col-lg-10 medical-main">
-                    <!-- Por esta versión mejorada: -->
-<div class="row align-items-center mb-4">
-    <div class="col-md-6 text-center text-md-start">
-        <h2 class="mb-3 mb-md-0"><i class="fas fa-calendar-day me-2"></i>Gestión de Citas</h2>
-    </div>
-    <div class="col-md-6">
-        <div class="d-flex flex-column flex-md-row justify-content-end">
-            <div class="input-group medical-search mb-2 mb-md-0 me-md-2 flex-grow-1">
-                <input type="text" class="form-control" placeholder="Buscar paciente...">
-                <button class="btn btn-medical" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
+          <a class="navbar-brand" href="#">
+            <i class="fas fa-clinic-medical me-2"></i>
+            <span class="fw-bold">MedicalCenter</span>
+          </a>
+          <div class="d-flex align-items-center">
+            <div id="live-clock" class="text-white me-3"></div>
+            <div class="dropdown">
+              <button
+                class="btn btn-medical dropdown-toggle"
+                type="button"
+                id="userDropdown"
+                data-bs-toggle="dropdown"
+              >
+                <i class="fas fa-user-circle me-1"></i>
+                Usuario
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="fas fa-user me-2"></i>Perfil</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="fas fa-cog me-2"></i>Configuración</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#"
+                    ><i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión</a
+                  >
+                </li>
+              </ul>
             </div>
-            <button class="btn btn-medical">
-             <i class="fas fa-filter me-1"></i>Filtrar
-            </button>
-            </div>
-              </div>
-                </div>
-                    <!-- Acciones rápidas -->
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <div class="card medical-card-action">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-calendar-plus action-icon"></i>
-                                    <h5 class="card-title">Agendar Cita</h5>
-                                   <button class="btn btn-sm btn-medical" data-bs-toggle="modal" data-bs-target="#agendarCitaModal">
-                                <i class="fas fa-plus me-1"></i> Nueva cita</button>
-                             </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card medical-card-action">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-edit action-icon"></i>
-                                    <h5 class="card-title">Modificar</h5>
-                                    <button class="btn btn-sm btn-medical" data-bs-toggle="modal" data-bs-target="#editarCitaModal">
-    <i class="fas fa-edit me-1"></i> Editar cita
-</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card medical-card-action">
-                                <div class="card-body text-center">
-                                    <i class="fas fa-calendar-times action-icon"></i>
-                                    <h5 class="card-title">Cancelar</h5>
-                                   <button class="btn btn-sm btn-medical" data-bs-toggle="modal" data-bs-target="#cancelarCitaModal">
-    <i class="fas fa-calendar-times me-1"></i> Cancelar cita
-</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Lista de citas -->
-                    <div class="card medical-card-list">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-list me-2"></i>Próximas Citas</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="medical-appointment">
-                                <div class="appointment-header">
-                                    <span class="badge bg-primary">Hoy</span>
-                                    <h5>Luis Arturo Guerrero Hernández</h5>
-                                    <span class="text-muted"><i class="fas fa-clock me-1"></i>01/06/2025 - 14:00 hrs</span>
-                                </div>
-                                <div class="appointment-actions">
-                                    <button class="btn btn-sm btn-medical">
-                                        <i class="fas fa-play me-1"></i>Iniciar consulta
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-medical">
-                                        <i class="fas fa-info-circle me-1"></i>Ver detalles
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="medical-appointment">
-                                <div class="appointment-header">
-                                    <span class="badge bg-secondary">Pasada</span>
-                                    <h5>Luis Arturo Guerrero Hernández</h5>
-                                    <span class="text-muted"><i class="fas fa-clock me-1"></i>01/05/2024 - 15:00 hrs</span>
-                                </div>
-                                <div class="appointment-actions">
-                                    <button class="btn btn-sm btn-outline-medical">
-                                        <i class="fas fa-file-medical me-1"></i>Ver expediente
-                                    </button>
-                                    <button class="btn btn-sm btn-outline-medical">
-                                        <i class="fas fa-info-circle me-1"></i>Ver detalles
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </nav>
+
+      <!-- Contenido principal -->
+      <!-- Contenido principal -->
+      <div class="container-fluid">
+        <div class="row">
+          <!-- Sidebar -->
+          <div class="col-md-3 col-lg-2 medical-sidebar">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('dashboard' ) }}">
+                  <i class="fas fa-calendar-check me-2"></i>Citas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('pacientes' ) }}">
+                  <i class="fas fa-user-injured me-2"></i>Pacientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('medicos' ) }}">
+                  <i class="fas fa-user-md me-2"></i>Médicos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-file-medical me-2"></i>Expedientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <i class="fas fa-chart-bar me-2"></i>Reportes
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Main Content -->
+          <div class="col-md-9 col-lg-10 medical-main">
+            <!-- Por esta versión mejorada: -->
+            <div class="row align-items-center mb-4">
+              <div class="col-md-6 text-center text-md-start">
+                <h2 class="mb-3 mb-md-0">
+                  <i class="fas fa-calendar-day me-2"></i>Gestión de Citas
+                </h2>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex flex-column flex-md-row justify-content-end">
+                  <div
+                    class="input-group medical-search mb-2 mb-md-0 me-md-2 flex-grow-1"
+                  >
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Buscar paciente..."
+                    />
+                    <button class="btn btn-medical" type="button">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                  <button class="btn btn-medical">
+                    <i class="fas fa-filter me-1"></i>Filtrar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Acciones rápidas -->
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <div class="card medical-card-action">
+                  <div class="card-body text-center">
+                    <i class="fas fa-calendar-plus action-icon"></i>
+                    <h5 class="card-title">Agendar Cita</h5>
+                    <button
+                      class="btn btn-sm btn-medical"
+                      data-bs-toggle="modal"
+                      data-bs-target="#agendarCitaModal"
+                    >
+                      <i class="fas fa-plus me-1"></i> Nueva cita
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card medical-card-action">
+                  <div class="card-body text-center">
+                    <i class="fas fa-edit action-icon"></i>
+                    <h5 class="card-title">Modificar</h5>
+                    <button
+                      class="btn btn-sm btn-medical"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editarCitaModal"
+                    >
+                      <i class="fas fa-edit me-1"></i> Editar cita
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card medical-card-action">
+                  <div class="card-body text-center">
+                    <i class="fas fa-calendar-times action-icon"></i>
+                    <h5 class="card-title">Cancelar</h5>
+                    <button
+                      class="btn btn-sm btn-medical"
+                      data-bs-toggle="modal"
+                      data-bs-target="#cancelarCitaModal"
+                    >
+                      <i class="fas fa-calendar-times me-1"></i> Cancelar cita
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lista de citas -->
+            <div class="card medical-card-list">
+              <div class="card-header">
+                <h5 class="mb-0">
+                  <i class="fas fa-list me-2"></i>Próximas Citas
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="medical-appointment">
+                  <div class="appointment-header">
+                    <span class="badge bg-primary">Hoy</span>
+                    <h5>Luis Arturo Guerrero Hernández</h5>
+                    <span class="text-muted"
+                      ><i class="fas fa-clock me-1"></i>01/06/2025 - 14:00
+                      hrs</span
+                    >
+                  </div>
+                  <div class="appointment-actions">
+                    <button class="btn btn-sm btn-medical">
+                      <i class="fas fa-play me-1"></i>Iniciar consulta
+                    </button>
+                    <button class="btn btn-sm btn-outline-medical">
+                      <i class="fas fa-info-circle me-1"></i>Ver detalles
+                    </button>
+                  </div>
+                </div>
+
+                <div class="medical-appointment">
+                  <div class="appointment-header">
+                    <span class="badge bg-secondary">Pasada</span>
+                    <h5>Luis Arturo Guerrero Hernández</h5>
+                    <span class="text-muted"
+                      ><i class="fas fa-clock me-1"></i>01/05/2024 - 15:00
+                      hrs</span
+                    >
+                  </div>
+                  <div class="appointment-actions">
+                    <button class="btn btn-sm btn-outline-medical">
+                      <i class="fas fa-file-medical me-1"></i>Ver expediente
+                    </button>
+                    <button class="btn btn-sm btn-outline-medical">
+                      <i class="fas fa-info-circle me-1"></i>Ver detalles
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal para Agendar Cita -->
-<div class="modal fade" id="agendarCitaModal" tabindex="-1" aria-labelledby="agendarCitaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div
+      class="modal fade"
+      id="agendarCitaModal"
+      tabindex="-1"
+      aria-labelledby="agendarCitaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header medical-modal-header">
-                <h5 class="modal-title" id="agendarCitaModalLabel">
-                    <i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <!-- Buscar Paciente -->
-                    <div class="mb-4">
-                        <h6 class="medical-form-section-title">
-                            <i class="fas fa-user-injured me-2"></i>Datos del Paciente
-                        </h6>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control medical-input" placeholder="Buscar paciente...">
-                            <button class="btn btn-medical" type="button">
-                                <i class="fas fa-search"></i> Buscar
-                            </button>
-                        </div>
-                        
-                        <div class="medical-patient-info p-3">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label medical-label">Nombre completo</label>
-                                        <input type="text" class="form-control medical-input" value="Luis Arturo Guerrero Hernández">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label medical-label">Fecha de nacimiento</label>
-                                        <input type="date" class="form-control medical-input" value="1985-07-15">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Datos de la Cita -->
-                    <div class="mb-4">
-                        <h6 class="medical-form-section-title">
-                            <i class="fas fa-calendar-alt me-2"></i>Datos de la Cita
-                        </h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Fecha</label>
-                                    <input type="date" class="form-control medical-input">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Hora</label>
-                                    <input type="time" class="form-control medical-input">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label medical-label">Motivo de la consulta</label>
-                            <select class="form-select medical-input">
-                                <option selected>Seleccione un motivo...</option>
-                                <option>Consulta general</option>
-                                <option>Control</option>
-                                <option>Examen médico</option>
-                                <option>Emergencia</option>
-                                <option>Otro</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label medical-label">Médico</label>
-                            <select class="form-select medical-input">
-                                <option selected>Seleccione un médico...</option>
-                                <option>Dra. Ana Martínez - Cardiología</option>
-                                <option>Dr. Carlos Sánchez - Pediatría</option>
-                                <option>Dra. Laura Gómez - Medicina General</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label medical-label">Notas adicionales</label>
-                            <textarea class="form-control medical-input" rows="3"></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i> Cancelar
-                </button>
-                <button type="button" class="btn btn-medical">
-                    <i class="fas fa-calendar-check me-1"></i> Agendar Cita
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para Editar Cita -->
-<div class="modal fade" id="editarCitaModal" tabindex="-1" aria-labelledby="editarCitaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header medical-modal-header">
-                <h5 class="modal-title" id="editarCitaModalLabel">
-                    <i class="fas fa-edit me-2"></i>Editar Cita Existente
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <!-- Información del Paciente (solo lectura) -->
-                    <div class="mb-4">
-                        <h6 class="medical-form-section-title">
-                            <i class="fas fa-user-injured me-2"></i>Datos del Paciente
-                        </h6>
-                        <div class="medical-patient-info p-3">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label medical-label">Nombre completo</label>
-                                        <input type="text" class="form-control medical-input-plain" value="Luis Arturo Guerrero Hernández" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label medical-label">Fecha de nacimiento</label>
-                                        <input type="text" class="form-control medical-input-plain" value="07/07/2005" readonly>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Datos editables de la Cita -->
-                    <div class="mb-4">
-                        <h6 class="medical-form-section-title">
-                            <i class="fas fa-calendar-alt me-2"></i>Datos de la Cita
-                        </h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Fecha</label>
-                                    <input type="date" class="form-control medical-input" value="2025-06-01">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Hora</label>
-                                    <input type="time" class="form-control medical-input" value="14:00">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label medical-label">Motivo de la consulta</label>
-                            <select class="form-select medical-input">
-                                <option>Consulta general</option>
-                                <option selected>Control</option>
-                                <option>Examen médico</option>
-                                <option>Emergencia</option>
-                                <option>Otro</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label medical-label">Médico</label>
-                            <select class="form-select medical-input">
-                                <option>Dra. Ana Martínez - Cardiología</option>
-                                <option selected>Dr. Carlos Sánchez - Pediatría</option>
-                                <option>Dra. Laura Gómez - Medicina General</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label medical-label">Notas adicionales</label>
-                            <textarea class="form-control medical-input" rows="3">Paciente requiere control anual de crecimiento</textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i> Descartar cambios
-                </button>
-                <button type="button" class="btn btn-medical">
-                    <i class="fas fa-save me-1"></i> Guardar cambios
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal para Cancelar Cita -->
-<div class="modal fade" id="cancelarCitaModal" tabindex="-1" aria-labelledby="cancelarCitaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header medical-modal-header">
-                <h5 class="modal-title" id="cancelarCitaModalLabel">
-                    <i class="fas fa-calendar-times me-2"></i>Cancelar Cita
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-4">
-                    <h6 class="medical-form-section-title">
-                        <i class="fas fa-search me-2"></i>Seleccione la cita a cancelar
-                    </h6>
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control medical-input" placeholder="Buscar cita por paciente o fecha...">
-                        <button class="btn btn-medical" type="button">
-                            <i class="fas fa-search"></i> Buscar
-                        </button>
-                    </div>
-                    
-                    <!-- Lista de citas disponibles para cancelar -->
-                    <div class="medical-citas-list">
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="citaACancelar" id="cita1" checked>
-                                    <label class="form-check-label" for="cita1">
-                                        <strong>Luis Arturo Guerrero Hernández</strong><br>
-                                        <small class="text-muted">01/06/2025 - 14:00 hrs | Control anual</small>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="list-group-item">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="citaACancelar" id="cita2">
-                                    <label class="form-check-label" for="cita2">
-                                        <strong>María Fernanda López García</strong><br>
-                                        <small class="text-muted">03/06/2025 - 10:30 hrs | Consulta general</small>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="list-group-item">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="citaACancelar" id="cita3">
-                                    <label class="form-check-label" for="cita3">
-                                        <strong>Juan Pérez Martínez</strong><br>
-                                        <small class="text-muted">05/06/2025 - 16:45 hrs | Examen médico</small>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Confirmación de cancelación -->
-                    <div class="alert alert-warning mt-4" id="confirmacionCancelacion" style="display: none;">
-                        <h6><i class="fas fa-exclamation-triangle me-2"></i>¿Está seguro que desea cancelar esta cita?</h6>
-                        <p class="mb-2">Esta acción no se puede deshacer.</p>
-                        <div class="mt-2">
-                            <button type="button" class="btn btn-sm btn-outline-medical me-2" id="btnNoCancelar">
-                                No, conservar cita
-                            </button>
-                            <button type="button" class="btn btn-sm btn-medical" id="btnSiCancelar">
-                                Sí, cancelar cita
-                            </button>
-                        </div>
-                    </div>
+          <div class="modal-header medical-modal-header">
+            <h5 class="modal-title" id="agendarCitaModalLabel">
+              <i class="fas fa-calendar-plus me-2"></i>Agendar Nueva Cita
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <!-- Buscar Paciente -->
+              <div class="mb-4">
+                <h6 class="medical-form-section-title">
+                  <i class="fas fa-user-injured me-2"></i>Datos del Paciente
+                </h6>
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control medical-input"
+                    placeholder="Buscar paciente..."
+                  />
+                  <button class="btn btn-medical" type="button">
+                    <i class="fas fa-search"></i> Buscar
+                  </button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
-                    <i class="fas fa-times me-1"></i> Cerrar
-                </button>
-                <button type="button" class="btn btn-medical" id="btnSeleccionarCancelar">
-                    <i class="fas fa-check-circle me-1"></i> Seleccionar para cancelar
-                </button>
-            </div>
+
+                <div class="medical-patient-info p-3">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label medical-label"
+                          >Nombre completo</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control medical-input"
+                          value="Luis Arturo Guerrero Hernández"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label medical-label"
+                          >Fecha de nacimiento</label
+                        >
+                        <input
+                          type="date"
+                          class="form-control medical-input"
+                          value="1985-07-15"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Datos de la Cita -->
+              <div class="mb-4">
+                <h6 class="medical-form-section-title">
+                  <i class="fas fa-calendar-alt me-2"></i>Datos de la Cita
+                </h6>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label medical-label">Fecha</label>
+                      <input type="date" class="form-control medical-input" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label medical-label">Hora</label>
+                      <input type="time" class="form-control medical-input" />
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label medical-label"
+                    >Motivo de la consulta</label
+                  >
+                  <select class="form-select medical-input">
+                    <option selected>Seleccione un motivo...</option>
+                    <option>Consulta general</option>
+                    <option>Control</option>
+                    <option>Examen médico</option>
+                    <option>Emergencia</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label medical-label">Médico</label>
+                  <select class="form-select medical-input">
+                    <option selected>Seleccione un médico...</option>
+                    <option>Dra. Ana Martínez - Cardiología</option>
+                    <option>Dr. Carlos Sánchez - Pediatría</option>
+                    <option>Dra. Laura Gómez - Medicina General</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label medical-label"
+                    >Notas adicionales</label
+                  >
+                  <textarea
+                    class="form-control medical-input"
+                    rows="3"
+                  ></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-medical"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times me-1"></i> Cancelar
+            </button>
+            <button type="button" class="btn btn-medical">
+              <i class="fas fa-calendar-check me-1"></i> Agendar Cita
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+
+    <!-- Modal para Editar Cita -->
+    <div
+      class="modal fade"
+      id="editarCitaModal"
+      tabindex="-1"
+      aria-labelledby="editarCitaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header medical-modal-header">
+            <h5 class="modal-title" id="editarCitaModalLabel">
+              <i class="fas fa-edit me-2"></i>Editar Cita Existente
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <!-- Información del Paciente (solo lectura) -->
+              <div class="mb-4">
+                <h6 class="medical-form-section-title">
+                  <i class="fas fa-user-injured me-2"></i>Datos del Paciente
+                </h6>
+                <div class="medical-patient-info p-3">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label medical-label"
+                          >Nombre completo</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control medical-input-plain"
+                          value="Luis Arturo Guerrero Hernández"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label class="form-label medical-label"
+                          >Fecha de nacimiento</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control medical-input-plain"
+                          value="07/07/2005"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Datos editables de la Cita -->
+              <div class="mb-4">
+                <h6 class="medical-form-section-title">
+                  <i class="fas fa-calendar-alt me-2"></i>Datos de la Cita
+                </h6>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label medical-label">Fecha</label>
+                      <input
+                        type="date"
+                        class="form-control medical-input"
+                        value="2025-06-01"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label class="form-label medical-label">Hora</label>
+                      <input
+                        type="time"
+                        class="form-control medical-input"
+                        value="14:00"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label medical-label"
+                    >Motivo de la consulta</label
+                  >
+                  <select class="form-select medical-input">
+                    <option>Consulta general</option>
+                    <option selected>Control</option>
+                    <option>Examen médico</option>
+                    <option>Emergencia</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label medical-label">Médico</label>
+                  <select class="form-select medical-input">
+                    <option>Dra. Ana Martínez - Cardiología</option>
+                    <option selected>Dr. Carlos Sánchez - Pediatría</option>
+                    <option>Dra. Laura Gómez - Medicina General</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label medical-label"
+                    >Notas adicionales</label
+                  >
+                  <textarea class="form-control medical-input" rows="3">
+Paciente requiere control anual de crecimiento</textarea
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-medical"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times me-1"></i> Descartar cambios
+            </button>
+            <button type="button" class="btn btn-medical">
+              <i class="fas fa-save me-1"></i> Guardar cambios
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para Cancelar Cita -->
+    <div
+      class="modal fade"
+      id="cancelarCitaModal"
+      tabindex="-1"
+      aria-labelledby="cancelarCitaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header medical-modal-header">
+            <h5 class="modal-title" id="cancelarCitaModalLabel">
+              <i class="fas fa-calendar-times me-2"></i>Cancelar Cita
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-4">
+              <h6 class="medical-form-section-title">
+                <i class="fas fa-search me-2"></i>Seleccione la cita a cancelar
+              </h6>
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control medical-input"
+                  placeholder="Buscar cita por paciente o fecha..."
+                />
+                <button class="btn btn-medical" type="button">
+                  <i class="fas fa-search"></i> Buscar
+                </button>
+              </div>
+
+              <!-- Lista de citas disponibles para cancelar -->
+              <div class="medical-citas-list">
+                <div class="list-group">
+                  <div class="list-group-item">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="citaACancelar"
+                        id="cita1"
+                        checked
+                      />
+                      <label class="form-check-label" for="cita1">
+                        <strong>Luis Arturo Guerrero Hernández</strong><br />
+                        <small class="text-muted"
+                          >01/06/2025 - 14:00 hrs | Control anual</small
+                        >
+                      </label>
+                    </div>
+                  </div>
+                  <div class="list-group-item">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="citaACancelar"
+                        id="cita2"
+                      />
+                      <label class="form-check-label" for="cita2">
+                        <strong>María Fernanda López García</strong><br />
+                        <small class="text-muted"
+                          >03/06/2025 - 10:30 hrs | Consulta general</small
+                        >
+                      </label>
+                    </div>
+                  </div>
+                  <div class="list-group-item">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        name="citaACancelar"
+                        id="cita3"
+                      />
+                      <label class="form-check-label" for="cita3">
+                        <strong>Juan Pérez Martínez</strong><br />
+                        <small class="text-muted"
+                          >05/06/2025 - 16:45 hrs | Examen médico</small
+                        >
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Confirmación de cancelación -->
+              <div
+                class="alert alert-warning mt-4"
+                id="confirmacionCancelacion"
+                style="display: none"
+              >
+                <h6>
+                  <i class="fas fa-exclamation-triangle me-2"></i>¿Está seguro
+                  que desea cancelar esta cita?
+                </h6>
+                <p class="mb-2">Esta acción no se puede deshacer.</p>
+                <div class="mt-2">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-medical me-2"
+                    id="btnNoCancelar"
+                  >
+                    No, conservar cita
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-medical"
+                    id="btnSiCancelar"
+                  >
+                    Sí, cancelar cita
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-medical"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times me-1"></i> Cerrar
+            </button>
+            <button
+              type="button"
+              class="btn btn-medical"
+              id="btnSeleccionarCancelar"
+            >
+              <i class="fas fa-check-circle me-1"></i> Seleccionar para cancelar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Nuestro JS -->
     <script src="../js/dashboard.js"></script>
-</body>
+  </body>
 </html>
