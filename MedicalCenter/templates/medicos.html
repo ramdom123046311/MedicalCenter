@@ -302,45 +302,56 @@
                                         <option>Cirugía General</option>
                                         <option>Medicina Interna</option>
                                         <option>Ginecología</option>
-                                        <option>Otra</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label medical-label">Especialidad</label>
+                                <select class="form-select medical-input" required>
+                                    <option value="" selected disabled>Seleccionar especialidad...</option>
+                                    <option>Cardiología</option>
+                                    <option>Pediatría</option>
+                                    <option>Cirugía General</option>
+                                    <option>Medicina Interna</option>
+                                    <option>Ginecología</option>
+                                    <option>Otra</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Teléfono</label>
-                                    <input type="tel" class="form-control medical-input" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Centro médico</label>
-                                    <select class="form-select medical-input" required>
-                                        <option value="" selected disabled>Seleccionar centro...</option>
-                                        <option>MedicalCenter Norte</option>
-                                        <option>MedicalCenter Sur</option>
-                                        <option>MedicalCenter Oriente</option>
-                                        <option>MedicalCenter Poniente</option>
-                                    </select>
-                                </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label medical-label">Teléfono</label>
+                                <input type="tel" class="form-control medical-input" required pattern="[0-9\-\+ ]{10,15}" title="Número de teléfono válido">
+                                
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-1"></i> Cancelar
-                    </button>
-                    <button type="button" class="btn btn-medical">
-                        <i class="fas fa-save me-1"></i> Registrar médico
-                    </button>
-                </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label medical-label">Centro médico</label>
+                                <select class="form-select medical-input" required>
+                                    <option value="" selected disabled>Seleccionar centro...</option>
+                                    <option>MedicalCenter Norte</option>
+                                    <option>MedicalCenter Sur</option>
+                                    <option>MedicalCenter Oriente</option>
+                                    <option>MedicalCenter Poniente</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-medical">
+                    <i class="fas fa-save me-1"></i> Registrar médico
+                </button>
             </div>
         </div>
     </div>
-
+</div>
     <!-- Modal Editar Médico -->
     <div class="modal fade" id="editarMedicoModal" tabindex="-1" aria-labelledby="editarMedicoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
