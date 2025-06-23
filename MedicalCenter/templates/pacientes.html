@@ -9,7 +9,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Nuestros estilos -->
-    <link rel="stylesheet" href="../css/pacientes.css">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/pacientes.css') }}">
 </head>
 <body class="medical-body">
     <div class="dashboard-container">
@@ -45,7 +45,7 @@
                 <div class="col-md-3 col-lg-2 medical-sidebar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="../html/dashboard.html">
+                            <a class="nav-link" href="{{url_for('dashboard' ) }}">
                                 <i class="fas fa-calendar-check me-2"></i>Citas
                             </a>
                         </li>
