@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MedicalCenter - Inicio de Sesión</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Icons para los iconos que vamos a utilizar en el proyecto-->
+    <!-- Google Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Nuestros estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
@@ -17,7 +17,6 @@
             <div class="col-md-6 col-lg-5">
                 <div class="card medical-card shadow-lg">
                     <div class="card-body p-5">
-                        <!-- Logo y título -->
                         <div class="text-center mb-4">
                             <div class="medical-icon mb-3">
                                 <span class="material-icons" style="font-size: 3rem; color: #2a5c8d;">medical_services</span>
@@ -26,34 +25,46 @@
                             <p class="text-muted">Inicio de sesión para personal autorizado</p>
                         </div>
 
-         <!-- Formulario -->
-<form class="login-form" action="{{ url_for('dashboard') }}" method="GET">
+                        <!-- Mensajes Flash -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
 
-    <!-- Campo RFC -->
-    <div class="mb-3">
-        <label for="rfc" class="form-label medical-label">
-            <span class="material-icons me-2">badge</span>RFC
-        </label>
-        <input type="text" class="form-control medical-input" id="rfc" placeholder="Ingrese su RFC" required>
-    </div>
-    
-    <!-- Campo Contraseña -->
-    <div class="mb-4">
-        <label for="password" class="form-label medical-label">
-            <span class="material-icons me-2">lock</span>Contraseña
-        </label>
-        <input type="password" class="form-control medical-input" id="password" placeholder="Ingrese su contraseña" required>
-    </div>
-    
-    <!-- Botón de acceso -->
-    <div class="d-grid gap-2">
-        <button type="submit" class="btn medical-btn">
-            <span class="material-icons me-2">login</span>Iniciar Sesión
-        </button>
-    </div>
-</form>
-
-                        <!-- Enlace de ayuda por si acaso olvidan su contrasena-->
+                        <!-- Formulario CORREGIDO -->
+                        <form class="login-form" action="{{ url_for('home') }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <!-- Campo RFC -->
+                            <div class="mb-3">
+                                <label for="rfc" class="form-label medical-label">
+                                    <span class="material-icons me-2">badge</span>RFC
+                                </label>
+                                <input type="text" class="form-control medical-input" id="rfc" name="rfc" placeholder="Ingrese su RFC" required>
+                            </div>
+                            
+                            <!-- Campo Contraseña -->
+                            <div class="mb-4">
+                                <label for="password" class="form-label medical-label">
+                                    <span class="material-icons me-2">lock</span>Contraseña
+                                </label>
+                                <input type="password" class="form-control medical-input" id="password" name="password" placeholder="Ingrese su contraseña" required>
+                            </div>
+                            
+                            <!-- Botón de acceso -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn medical-btn">
+                                    <span class="material-icons me-2">login</span>Iniciar Sesión
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <!-- Enlace de ayuda -->
                         <div class="text-center mt-4">
                             <p class="small text-muted">
                                 ¿Problemas para ingresar? 
@@ -66,7 +77,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap -->
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
