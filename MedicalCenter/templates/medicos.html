@@ -60,7 +60,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ url_for('expedientes' ) }}">
                                 <i class="fas fa-file-medical me-2"></i>Expedientes
                             </a>
                         </li>
@@ -170,7 +170,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Primer nombre</label>
-                                    <input type="text" class="form-control medical-input" name="primer_nombre" required>
+                                    <input type="text" class="form-control medical-input" name="primer_nombre" >
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -184,7 +184,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Apellido paterno</label>
-                                    <input type="text" class="form-control medical-input" name="apellido_paterno" required>
+                                    <input type="text" class="form-control medical-input" name="apellido_paterno" >
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -198,13 +198,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Correo electrónico</label>
-                                    <input type="email" class="form-control medical-input" name="correo" required>
+                                    <input type="email" class="form-control medical-input" name="correo" >
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">RFC</label>
-                                    <input type="text" class="form-control medical-input" name="rfc" required>
+                                    <input type="text" class="form-control medical-input" name="rfc" >
                                 </div>
                             </div>
                         </div>
@@ -212,13 +212,13 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Cédula profesional</label>
-                                    <input type="text" class="form-control medical-input" name="cedula_profesional" required>
+                                    <input type="text" class="form-control medical-input" name="cedula_profesional" >
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Teléfono</label>
-                                    <input type="tel" class="form-control medical-input" name="telefono" required>
+                                    <input type="tel" class="form-control medical-input" name="telefono" >
                                 </div>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Especialidad</label>
-                                    <select class="form-select medical-input" name="especialidad" required>
+                                    <select class="form-select medical-input" name="especialidad" >
                                         <option value="" selected disabled>Seleccionar especialidad...</option>
                                         <option value="Cardiología">Cardiología</option>
                                         <option value="Pediatría">Pediatría</option>
@@ -241,7 +241,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label medical-label">Centro médico</label>
-                                    <select class="form-select medical-input" name="centro_medico" required>
+                                    <select class="form-select medical-input" name="centro_medico" >
                                         <option value="" selected disabled>Seleccionar centro...</option>
                                         <option value="MedicalCenter Norte">MedicalCenter Norte</option>
                                         <option value="MedicalCenter Sur">MedicalCenter Sur</option>
@@ -285,7 +285,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Primer nombre</label>
-                                    <input type="text" class="form-control" name="primer_nombre" value="{{ medico.primer_nombre }}" required>
+                                    <input type="text" class="form-control" name="primer_nombre" value="{{ medico.primer_nombre }}" >
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Segundo nombre</label>
@@ -293,7 +293,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Apellido paterno</label>
-                                    <input type="text" class="form-control" name="apellido_paterno" value="{{ medico.apellido_paterno }}" required>
+                                    <input type="text" class="form-control" name="apellido_paterno" value="{{ medico.apellido_paterno }}" >
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Apellido materno</label>
@@ -301,7 +301,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Correo</label>
-                                    <input type="email" class="form-control" name="correo" value="{{ medico.correo }}" required>
+                                    <input type="email" class="form-control" name="correo" value="{{ medico.correo }}" >
                                 </div>
                                <div class="col-md-6 mb-3">
                                 <label class="form-label">RFC</label>
@@ -309,15 +309,15 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Teléfono</label>
-                                    <input type="tel" class="form-control" name="telefono" value="{{ medico.telefono }}" required>
+                                    <input type="tel" class="form-control" name="telefono" value="{{ medico.telefono }}" >
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Cédula profesional</label>
-                                    <input type="text" class="form-control" name="cedula_profesional" value="{{ medico.cedula_profesional }}" required>
+                                    <input type="text" class="form-control" name="cedula_profesional" value="{{ medico.cedula_profesional }}" >
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Especialidad</label>
-                                    <select class="form-select" name="especialidad" required>
+                                    <select class="form-select" name="especialidad" >
                                         <option value="Cardiología" {% if medico.especialidad == 'Cardiología' %}selected{% endif %}>Cardiología</option>
                                         <option value="Pediatría" {% if medico.especialidad == 'Pediatría' %}selected{% endif %}>Pediatría</option>
                                         <option value="Cirugía General" {% if medico.especialidad == 'Cirugía General' %}selected{% endif %}>Cirugía General</option>
@@ -329,7 +329,7 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Centro Médico</label>
-                                    <select class="form-select" name="centro_medico" required>
+                                    <select class="form-select" name="centro_medico" >
                                         <option value="MedicalCenter Norte" {% if medico.centro_medico == 'MedicalCenter Norte' %}selected{% endif %}>MedicalCenter Norte</option>
                                         <option value="MedicalCenter Sur" {% if medico.centro_medico == 'MedicalCenter Sur' %}selected{% endif %}>MedicalCenter Sur</option>
                                         <option value="MedicalCenter Oriente" {% if medico.centro_medico == 'MedicalCenter Oriente' %}selected{% endif %}>MedicalCenter Oriente</option>
@@ -379,6 +379,7 @@
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Nuestro JS -->
+     <script src="{{ url_for('static', filename='js/medicos.js') }}"></script>
     <script>
         // Función de búsqueda
         document.getElementById('searchInput').addEventListener('input', function() {
@@ -394,7 +395,6 @@
                 }
             });
         });
-        
         // Actualizar reloj en tiempo real
         function updateClock() {
             const now = new Date();

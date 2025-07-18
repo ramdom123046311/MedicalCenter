@@ -14,7 +14,7 @@ csrf = CSRFProtect(app)
 db_config = {
     'host': 'localhost',
     'user': 'root',
-    'password': '',
+    'password': '2983',
     'database': 'medicalcenter'
 }
 
@@ -31,7 +31,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# Decorador para verificar privilegios
+#verificar privilegios
 def privilege_required(privilegio):
     def decorator(f):
         @wraps(f)
@@ -87,13 +87,19 @@ def logout():
     flash('Has cerrado sesión', 'success')
     return redirect(url_for('home'))
 
+@app.route('/expedientes')
+@login_required
+def expedientes():
+    # Aún no hay conexión con la BD, solo se muestra la plantilla
+    return render_template('expedientes.html')
+
+
 @app.template_filter('formato_fecha_input')
 def formato_fecha_input(value):
     """Convierte fecha a formato YYYY-MM-DD para campos input type=date"""
     if not value:
         return ''
     return value.strftime('%Y-%m-%d')
-
 
 @app.route('/dashboard')
 @login_required
@@ -163,7 +169,7 @@ def pacientes():
                 conn.commit()
                 flash('Paciente eliminado exitosamente', 'success')
 
-        # Obtener pacientes activos (para GET y después de POST)
+        # Obtener pacientes activos
         cursor.execute("SELECT * FROM pacientes WHERE estatus = 1")
         pacientes = cursor.fetchall()
 
@@ -312,7 +318,6 @@ def ver_paciente(id_paciente):
     return render_template("ver_paciente.html", paciente=paciente)
 
 
-# Funciones para Jinja2
 @app.template_filter('format_fecha')
 def format_fecha(value):
     if value is None:

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% block title %}Detalles del Paciente{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -9,7 +11,8 @@
         </a>
     </div>
 
-    <div class="card mb-4">
+    {% if paciente %}
+    <div class="card mb-4 shadow-sm">
         <div class="card-header bg-primary text-white">
             <i class="fas fa-id-card me-2"></i> Información General
         </div>
@@ -17,19 +20,28 @@
             <h4 class="mb-3">{{ paciente.nombres }} {{ paciente.apellidos }}</h4>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <strong>Fecha de nacimiento:</strong><br>{{ paciente.fecha_nacimiento }}
+                    <strong>Fecha de nacimiento:</strong><br>
+                    {{ paciente.fecha_nacimiento }}
                 </div>
                 <div class="col-md-6 mb-3">
-                    <strong>Género:</strong><br>{{ paciente.genero }}
+                    <strong>Género:</strong><br>
+                    {{ paciente.genero }}
                 </div>
                 <div class="col-md-6 mb-3">
-                    <strong>Tipo de sangre:</strong><br>{{ paciente.tipo_sangre }}
+                    <strong>Tipo de sangre:</strong><br>
+                    {{ paciente.tipo_sangre }}
                 </div>
                 <div class="col-md-12 mb-3">
-                    <strong>Alergias:</strong><br>{{ paciente.alergias or 'Ninguna' }}
+                    <strong>Alergias:</strong><br>
+                    {{ paciente.alergias or 'Ninguna' }}
                 </div>
             </div>
         </div>
     </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <strong>Atención:</strong> No se encontró información del paciente.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
