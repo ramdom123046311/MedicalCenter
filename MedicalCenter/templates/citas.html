@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Citas</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Nuestros estilos -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/citas.css') }}">
+    <style>
+        .btn-editar {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+        }
+        .btn-editar:hover {
+            background-color: #3a7bc8;
+        }
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-action-group {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .btn-action {
+            margin: 2px;
+        }
+    </style>
+</head>
+<body class="medical-body">
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark medical-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-hospital me-2"></i>MedicalCenter
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container-fluid dashboard-container">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 medical-sidebar">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('citas') }}">
+                            <i class="fas fa-calendar-check me-2"></i>Citas
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('pacientes') }}">
+                            <i class="fas fa-user-injured me-2"></i>Pacientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('medicos') }}">
+                            <i class="fas fa-user-md me-2"></i>Médicos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('expedientes' ) }}">
+                            <i class="fas fa-file-medical me-2"></i>Expedientes
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link" href="{{ url_for('reportes') }}">
+                            <i class="fas fa-chart-bar me-2"></i>Reportes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="col-md-9 col-lg-10 medical-main">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">Gestión de Citas Médicas</h2>
+                    <div class="d-flex">
+                        <button class="btn btn-sm btn-outline-medical me-2" id="refreshBtn">
+                            <i class="fas fa-sync-alt me-1"></i>Actualizar
+                        </button>
+                        <button class="btn btn-sm btn-outline-medical" id="printBtn">
+                            <i class="fas fa-print me-1"></i>Imprimir
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mensajes flash -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <!-- Formulario -->
+                <div class="medical-card">
+                    <div class="medical-card-header form-header">
+                        <h5 class="mb-0">
+                            {% if modo_edicion %}Editar Cita{% else %}Agendar Nueva Cita{% endif %}
+                        </h5>
+                        {% if modo_edicion %}
+                        <button class="btn btn-sm btn-outline-secondary" id="cancelarEdicion">
+                            <i class="fas fa-times me-1"></i>Cancelar Edición
+                        </button>
+                        {% endif %}
+                    </div>
+                    <div class="card-body medical-card-body">
+                        <form action="{% if modo_edicion %}{{ url_for('actualizar_cita', id_cita=form_data.id_cita) }}{% else %}{{ url_for('agregar_cita') }}{% endif %}" 
+                              method="post" id="citaForm">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                            
+                            {% if modo_edicion %}
+                            <input type="hidden" name="id_cita" value="{{ form_data.id_cita }}">
+                            {% endif %}
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Paciente</label>
+                                    <select class="form-select medical-input {% if errors and errors.id_paciente %}is-invalid{% endif %}" name="id_paciente">
+                                        <option value="">Seleccione un paciente</option>
+                                        {% for paciente in pacientes %}
+                                            <option value="{{ paciente.id_paciente }}"
+                                                {% if form_data and form_data.id_paciente == paciente.id_paciente|string %}selected{% endif %}>
+                                                {{ paciente.nombre_completo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if errors and errors.id_paciente %}
+                                        <div class="invalid-feedback">{{ errors.id_paciente }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Médico</label>
+                                    <select class="form-select medical-input {% if errors and errors.id_medico %}is-invalid{% endif %}" name="id_medico">
+                                        <option value="">Seleccione un médico</option>
+                                        {% for medico in medicos %}
+                                            <option value="{{ medico.id_medico }}"
+                                                {% if form_data and form_data.id_medico == medico.id_medico|string %}selected{% endif %}>
+                                                {{ medico.nombre_completo }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if errors and errors.id_medico %}
+                                        <div class="invalid-feedback">{{ errors.id_medico }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label class="form-label">Fecha</label>
+                                    <input type="date" class="form-control medical-input {% if errors and errors.fecha %}is-invalid{% endif %}" 
+                                           name="fecha" value="{{ form_data.fecha if form_data else '' }}">
+                                    {% if errors and errors.fecha %}
+                                        <div class="invalid-feedback">{{ errors.fecha }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Hora</label>
+                                    <input type="time" class="form-control medical-input {% if errors and errors.hora %}is-invalid{% endif %}" 
+                                           name="hora" value="{{ form_data.hora if form_data else '' }}">
+                                    {% if errors and errors.hora %}
+                                        <div class="invalid-feedback">{{ errors.hora }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="form-label">Motivo consulta</label>
+                                    <textarea class="form-control medical-input {% if errors and errors.motivo %}is-invalid{% endif %}" 
+                                              name="motivo" rows="1" >{{ form_data.motivo if form_data else '' }}</textarea>
+                                    {% if errors and errors.motivo %}
+                                        <div class="invalid-feedback">{{ errors.motivo }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-medical">
+                                    <i class="fas fa-save me-1"></i>
+                                    {% if modo_edicion %}Actualizar Cita{% else %}Guardar Cita{% endif %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tabla -->
+                <div class="medical-card">
+                    <div class="medical-card-header">
+                        <h5 class="mb-0">Lista de Citas</h5>
+                    </div>
+                    <div class="card-body medical-card-body">
+                        <div class="table-responsive">
+                            <table class="table medical-table" id="citasTable">
+                                <thead>
+                                    <tr>
+                                        <th>Paciente</th>
+                                        <th>Médico</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
+                                        <th>Motivo consulta</th>
+                                        <th>Estatus</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for cita in citas %}
+                                        <tr data-id="{{ cita.id_cita }}">
+                                            <td>{{ cita.nombre_paciente }}</td>
+                                            <td>{{ cita.nombre_medico }}</td>
+                                            <td>{{ cita.fecha }}</td>
+                                            <td>{{ cita.hora }}</td>
+                                            <td>{{ cita.motivo }}</td>
+                                            <td>
+                                                {% if cita.estatus == 'cancelada' %}
+                                                    <span class="badge bg-danger">Cancelada</span>
+                                                {% else %}
+                                                    <span class="badge bg-success">Activa</span>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                <div class="btn-action-group">
+                                                    <!-- Botón Editar -->
+                                                    <a href="{{ url_for('editar_cita', id_cita=cita.id_cita) }}" 
+                                                       class="btn btn-sm btn-editar">
+                                                        <i class="fas fa-edit me-1"></i>Editar
+                                                    </a>
+
+                                                       <!-- Botón Explorar (NUEVO) -->
+                                                <a href="{{ url_for('exploracion', id_cita=cita.id_cita) }}" 
+                                                 class="btn btn-sm btn-outline-info btn-action">
+                                                 <i class="fas fa-stethoscope me-1"></i>Explorar
+                                                 </a>
+                                                    
+                                                    {% if cita.estatus != 'cancelada' %}
+                                                    <form action="{{ url_for('cancelar_cita', id_cita=cita.id_cita) }}" method="post" class="d-inline">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                        <button type="submit" class="btn btn-sm btn-outline-warning btn-action">
+                                                            <i class="fas fa-ban me-1"></i>Cancelar
+                                                        </button>
+                                                    </form>
+                                                    {% endif %}
+                                                    
+                                                    <form action="{{ url_for('eliminar_cita', id_cita=cita.id_cita) }}" method="post" class="d-inline">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger btn-action">
+                                                            <i class="fas fa-trash-alt me-1"></i>Eliminar
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="7" class="empty-message">
+                                                <i class="fas fa-calendar-times"></i>
+                                                <h5 class="mb-0">No hay citas registradas</h5>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JavaScript para funcionalidad en tiempo real -->
+    <script>
+        // Script para manejar la interacción
+        document.addEventListener('DOMContentLoaded', function() {
+            // Actualizar fecha mínima para selección de citas (hoy)
+            const today = new Date().toISOString().split('T')[0];
+            const fechaInput = document.querySelector('input[name="fecha"]');
+            if (fechaInput) {
+                fechaInput.min = today;
+            }
+            
+            // Botón de actualizar
+            const refreshBtn = document.getElementById('refreshBtn');
+            if (refreshBtn) {
+                refreshBtn.addEventListener('click', function() {
+                    location.reload();
+                });
+            }
+            
+            // Botón de imprimir
+            const printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.addEventListener('click', function() {
+                    window.print();
+                });
+            }
+            
+            // Confirmación para eliminar citas
+            document.querySelectorAll('.btn-outline-danger').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!confirm('¿Estás seguro de que deseas eliminar esta cita permanentemente?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Confirmación para cancelar citas
+            document.querySelectorAll('.btn-outline-warning').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    if (!confirm('¿Estás seguro de que deseas cancelar esta cita?')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            // Botón para cancelar edición
+            const cancelEditBtn = document.getElementById('cancelarEdicion');
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', function() {
+                    window.location.href = "{{ url_for('citas') }}";
+                });
+            }
+            
+            // Validación de formulario
+            const citaForm = document.getElementById('citaForm');
+            if (citaForm) {
+                citaForm.addEventListener('submit', function(e) {
+                    const fecha = document.querySelector('input[name="fecha"]')?.value;
+                    const hora = document.querySelector('input[name="hora"]')?.value;
+                    const paciente = document.querySelector('select[name="id_paciente"]')?.value;
+                    const medico = document.querySelector('select[name="id_medico"]')?.value;
+                    const motivo = document.querySelector('textarea[name="motivo"]')?.value.trim();
+                    
+                    let hasError = false;
+                    
+                    if (!paciente) {
+                        document.querySelector('select[name="id_paciente"]').classList.add('is-invalid');
+                        hasError = true;
+                    }
+                    
+                    if (!medico) {
+                        document.querySelector('select[name="id_medico"]').classList.add('is-invalid');
+                        hasError = true;
+                    }
+                    
+                    if (!fecha) {
+                        document.querySelector('input[name="fecha"]').classList.add('is-invalid');
+                        hasError = true;
+                    }
+                    
+                    if (!hora) {
+                        document.querySelector('input[name="hora"]').classList.add('is-invalid');
+                        hasError = true;
+                    }
+                    
+                    if (!motivo) {
+                        document.querySelector('textarea[name="motivo"]').classList.add('is-invalid');
+                        hasError = true;
+                    } else if (motivo.length < 3) {
+                        document.querySelector('textarea[name="motivo"]').classList.add('is-invalid');
+                        const errorElement = document.querySelector('textarea[name="motivo"]').nextElementSibling;
+                        if (errorElement && errorElement.classList.contains('invalid-feedback')) {
+                            errorElement.textContent = "El motivo debe tener al menos 3 caracteres";
+                        }
+                        hasError = true;
+                    }
+                    
+                    if (hasError) {
+                        e.preventDefault();
+                        alert('Por favor complete todos los campos requeridos');
+                    }
+                });
+            }
+            // Remover clases de error al cambiar campos
+            document.querySelectorAll('.medical-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    this.classList.remove('is-invalid');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

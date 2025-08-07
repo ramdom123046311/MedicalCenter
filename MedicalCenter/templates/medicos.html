@@ -37,7 +37,6 @@
                 </div>
             </div>
         </nav>
-
         <!-- Contenido principal -->
         <div class="container-fluid">
             <div class="row">
@@ -45,7 +44,7 @@
                 <div class="col-md-3 col-lg-2 medical-sidebar">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('dashboard') }}">
+                            <a class="nav-link" href="{{ url_for('citas') }}">
                                 <i class="fas fa-calendar-check me-2"></i>Citas
                             </a>
                         </li>
@@ -65,13 +64,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ url_for('reportes') }}">
                                 <i class="fas fa-chart-bar me-2"></i>Reportes
                             </a>
                         </li>
                     </ul>
                 </div>
-
             
                 <div class="col-md-9 col-lg-10 medical-main">
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -152,118 +150,142 @@
         </div>
     </div>
 
-    <!-- Modal Registrar Médico -->
-    <div class="modal fade" id="registrarMedicoModal" tabindex="-1" aria-labelledby="registrarMedicoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header medical-modal-header">
-                    <h5 class="modal-title" id="registrarMedicoModalLabel">
-                        <i class="fas fa-user-plus me-2"></i>Registrar Nuevo Médico
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ url_for('medicos') }}" method="POST">
-                        <input type="hidden" name="action" value="create">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Primer nombre</label>
-                                    <input type="text" class="form-control medical-input" name="primer_nombre" >
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Segundo nombre</label>
-                                    <input type="text" class="form-control medical-input" name="segundo_nombre">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Apellido paterno</label>
-                                    <input type="text" class="form-control medical-input" name="apellido_paterno" >
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Apellido materno</label>
-                                    <input type="text" class="form-control medical-input" name="apellido_materno">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Correo electrónico</label>
-                                    <input type="email" class="form-control medical-input" name="correo" >
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">RFC</label>
-                                    <input type="text" class="form-control medical-input" name="rfc" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Cédula profesional</label>
-                                    <input type="text" class="form-control medical-input" name="cedula_profesional" >
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Teléfono</label>
-                                    <input type="tel" class="form-control medical-input" name="telefono" >
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Especialidad</label>
-                                    <select class="form-select medical-input" name="especialidad" >
-                                        <option value="" selected disabled>Seleccionar especialidad...</option>
-                                        <option value="Cardiología">Cardiología</option>
-                                        <option value="Pediatría">Pediatría</option>
-                                        <option value="Cirugía General">Cirugía General</option>
-                                        <option value="Medicina Interna">Medicina Interna</option>
-                                        <option value="Ginecología">Ginecología</option>
-                                        <option value="Ortopedia">Ortopedia</option>
-                                        <option value="Neurología">Neurología</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label medical-label">Centro médico</label>
-                                    <select class="form-select medical-input" name="centro_medico" >
-                                        <option value="" selected disabled>Seleccionar centro...</option>
-                                        <option value="MedicalCenter Norte">MedicalCenter Norte</option>
-                                        <option value="MedicalCenter Sur">MedicalCenter Sur</option>
-                                        <option value="MedicalCenter Oriente">MedicalCenter Oriente</option>
-                                        <option value="MedicalCenter Poniente">MedicalCenter Poniente</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
-                                <i class="fas fa-times me-1"></i> Cancelar
-                            </button>
-                            <button type="submit" class="btn btn-medical">
-                                <i class="fas fa-save me-1"></i> Registrar médico
-                            </button>
-                        </div>
-                    </form>
-                </div>
+<!-- Modal Registrar Médico -->
+<div class="modal fade" id="registrarMedicoModal" tabindex="-1" aria-labelledby="registrarMedicoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header medical-modal-header">
+        <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Registrar Nuevo Médico</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="{{ url_for('medicos') }}" method="POST">
+        <input type="hidden" name="action" value="create">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="modal-body">
+          <!-- Primer y segundo nombre -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Primer nombre</label>
+              <input name="primer_nombre" class="form-control"
+                     value="{{ form_data_med.primer_nombre if form_data_med else '' }}">
+              {% if errores_med and errores_med.primer_nombre %}
+                <small class="text-danger">{{ errores_med.primer_nombre }}</small>
+              {% endif %}
             </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Segundo nombre</label>
+              <input name="segundo_nombre" class="form-control"
+                     value="{{ form_data_med.segundo_nombre if form_data_med else '' }}">
+                {% if errores_med and errores_med.segundo_nombre %}
+                <small class="text-danger">{{ errores_med.segundo_nombre }}</small>
+                {% endif %}
+            </div>
+          </div>
+
+          <!-- Apellidos -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Apellido paterno</label>
+              <input name="apellido_paterno" class="form-control"
+                     value="{{ form_data_med.apellido_paterno if form_data_med else '' }}">
+              {% if errores_med and errores_med.apellido_paterno %}
+                <small class="text-danger">{{ errores_med.apellido_paterno }}</small>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Apellido materno</label>
+              <input name="apellido_materno" class="form-control"
+                     value="{{ form_data_med.apellido_materno if form_data_med else '' }}">
+                {% if errores_med and errores_med.apellido_materno %}
+                <small class="text-danger">{{ errores_med.apellido_materno }}</small>
+                {% endif %}
+            </div>
+          </div>
+
+          <!-- Correo y RFC -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Correo electrónico</label>
+              <input type="email" name="correo" class="form-control"
+                     value="{{ form_data_med.correo if form_data_med else '' }}">
+              {% if errores_med and errores_med.correo %}
+                <small class="text-danger">{{ errores_med.correo }}</small>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">RFC</label>
+              <input name="rfc" class="form-control"
+                     value="{{ form_data_med.rfc if form_data_med else '' }}">
+              {% if errores_med and errores_med.rfc %}
+                <small class="text-danger">{{ errores_med.rfc }}</small>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Cédula y teléfono -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Cédula profesional</label>
+              <input name="cedula_profesional" class="form-control"
+                     value="{{ form_data_med.cedula_profesional if form_data_med else '' }}">
+              {% if errores_med and errores_med.cedula_profesional %}
+                <small class="text-danger">{{ errores_med.cedula_profesional }}</small>
+              {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Teléfono</label>
+              <input name="telefono" class="form-control"
+                     value="{{ form_data_med.telefono if form_data_med else '' }}">
+                {% if errores_med and errores_med.telefono %}
+                <small class="text-danger">{{ errores_med.telefono }}</small>
+                {% endif %}
+            </div>
+          </div>
+
+          <!-- Especialidad y centro -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Especialidad</label>
+              <select name="especialidad" class="form-select">
+                <option value="" disabled {% if not form_data_med or not form_data_med.especialidad %}selected{% endif %}>Seleccionar…</option>
+                {% for esp in ['Cardiología','Pediatría','Cirugía General','Medicina Interna','Ginecología','Ortopedia','Neurología'] %}
+                  <option value="{{ esp }}" {% if form_data_med and form_data_med.especialidad==esp %}selected{% endif %}>{{ esp }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Centro Médico</label>
+              <select name="centro_medico" class="form-select">
+                <option value="" disabled {% if not form_data_med or not form_data_med.centro_medico %}selected{% endif %}>Seleccionar…</option>
+                {% for centro in ['MedicalCenter Norte','MedicalCenter Sur','MedicalCenter Oriente','MedicalCenter Poniente'] %}
+                  <option value="{{ centro }}" {% if form_data_med and form_data_med.centro_medico==centro %}selected{% endif %}>{{ centro }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div> <!-- modal‑body -->
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-medical" data-bs-dismiss="modal">
+            <i class="fas fa-times me-1"></i> Cancelar
+          </button>
+          <button type="submit" class="btn btn-medical">
+            <i class="fas fa-save me-1"></i> Registrar médico
+          </button>
         </div>
+      </form>
     </div>
+  </div>
+</div>
+
+<!-- Reabrir modal si hubo errores en creación -->
+{% if errores_med and not open_edit %}
+<script>
+   new bootstrap.Modal(document.getElementById('registrarMedicoModal')).show();
+</script>
+{% endif %}
 
     <!-- Modales para cada médico -->
     {% for medico in medicos %}
@@ -409,7 +431,6 @@
             };
             document.getElementById('live-clock').textContent = now.toLocaleDateString('es-ES', options);
         }
-        
         setInterval(updateClock, 1000);
         updateClock();
     </script>
