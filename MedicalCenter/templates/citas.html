@@ -80,11 +80,6 @@
                             <i class="fas fa-file-medical me-2"></i>Expedientes
                         </a>
                     </li>
-                    <li class="nav-item">
-                       <a class="nav-link" href="{{ url_for('reportes') }}">
-                            <i class="fas fa-chart-bar me-2"></i>Reportes
-                        </a>
-                    </li>
                 </ul>
             </div>
 
@@ -93,12 +88,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Gestión de Citas Médicas</h2>
                     <div class="d-flex">
-                        <button class="btn btn-sm btn-outline-medical me-2" id="refreshBtn">
-                            <i class="fas fa-sync-alt me-1"></i>Actualizar
-                        </button>
-                        <button class="btn btn-sm btn-outline-medical" id="printBtn">
-                            <i class="fas fa-print me-1"></i>Imprimir
-                        </button>
+                       
                     </div>
                 </div>
 
@@ -255,7 +245,12 @@
                                                  class="btn btn-sm btn-outline-info btn-action">
                                                  <i class="fas fa-stethoscope me-1"></i>Explorar
                                                  </a>
-                                                    
+
+                                                   <a href="{{ url_for('crear_expediente', paciente_id=cita.id_paciente) }}" 
+                                                       class="btn btn-success btn-sm">
+                                                        Crear expediente
+                                                        </a>
+
                                                     {% if cita.estatus != 'cancelada' %}
                                                     <form action="{{ url_for('cancelar_cita', id_cita=cita.id_cita) }}" method="post" class="d-inline">
                                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

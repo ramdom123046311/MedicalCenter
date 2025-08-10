@@ -65,7 +65,7 @@ def home():
             usuario = cursor.fetchone()
             
             if usuario:
-                # Verificar contraseña (SHA-256)
+                # Verificar contraseña
                 cursor.execute("SELECT SHA2(%s, 256) AS hash", (contrasena,))
                 hashed_password = cursor.fetchone()['hash']
                 
@@ -124,144 +124,43 @@ def expedientes():
             cursor.close()
             conn.close()
 
-# ===== RUTA: Crear expediente (formulario) =====
-@app.route('/expedientes/crear')
-def crear_expediente():
+@app.route('/expedientes/crear/<int:paciente_id>')
+def crear_expediente(paciente_id):
     try:
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
-        
-        # Consulta corregida con el nombre real de la tabla y columna
+
+        # CORRECCIÓN: Cambiar ORDER BY id -> ORDER BY id_exploradon
         cursor.execute("""
-            SELECT p.id_paciente, 
-                   CONCAT(p.nombres, ' ', p.apellidos) AS nombre_completo
-            FROM pacientes p
-            WHERE EXISTS (
-                SELECT 1 FROM exploracion WHERE id_paciente = p.id_paciente
-            )
-        """)
-        pacientes = cursor.fetchall()
-        
-        return render_template('expedientes_crear.html', pacientes=pacientes)
-        
-    except mysql.connector.Error as err:
-        flash(f'Error de base de datos: {err}', 'danger')
-        return render_template('expedientes_crear.html', pacientes=[])
-        
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
+            SELECT id_paciente, diagnostico
+            FROM exploracion
+            WHERE id_paciente = %s
+            ORDER BY id_exploracion DESC  
+            LIMIT 1
+        """, (paciente_id,))
+        exploracion = cursor.fetchone()
 
-# ===== RUTA: Almacenar nuevo expediente =====
-@app.route('/expedientes/store', methods=['POST'])
-def store_expediente():
-    try:
-        paciente_id = request.form['paciente_id']
-        diagnostico = request.form['diagnostico']
-        
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO expedientes (paciente_id, diagnostico) VALUES (%s, %s)",
-            (paciente_id, diagnostico)
-        )
-        conn.commit()
-        
-        flash('Expediente creado exitosamente', 'success')
-        return redirect(url_for('expedientes'))
-        
-    except mysql.connector.Error as err:
-        flash(f'Error al crear expediente: {err}', 'danger')
-        return redirect(url_for('crear_expediente'))
-        
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
+        if not exploracion:
+            flash("No hay datos de exploración para este paciente", "warning")
+            return redirect(url_for("citas"))
 
-# ===== RUTA: Editar expediente (formulario) =====
-@app.route('/expedientes/editar/<int:id>')
-def editar_expediente(id):
-    try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor(dictionary=True)
-        
-        # Obtener expediente
-        cursor.execute("SELECT * FROM expedientes WHERE id = %s", (id,))
-        expediente = cursor.fetchone()
-        
-        if not expediente:
-            flash('Expediente no encontrado', 'danger')
-            return redirect(url_for('expedientes'))
-        
-        # Obtener todos los pacientes
         cursor.execute("""
-            SELECT id_paciente, 
-                   CONCAT(nombres, ' ', apellidos) AS nombre_completo
-            FROM pacientes
-        """)
-        pacientes = cursor.fetchall()
-        
-        return render_template('expedientes_editar.html', expediente=expediente, pacientes=pacientes)
-        
+            INSERT INTO expedientes (paciente_id, diagnostico)
+            VALUES (%s, %s)
+        """, (exploracion["id_paciente"], exploracion["diagnostico"]))
+        conn.commit()
+
+        flash("Expediente creado exitosamente", "success")
+        return redirect(url_for("expedientes"))
+
     except mysql.connector.Error as err:
-        flash(f'Error de base de datos: {err}', 'danger')
-        return redirect(url_for('expedientes'))
-        
+        flash(f"Error en la base de datos: {err}", "danger")
+        return redirect(url_for("citas"))
     finally:
         if conn.is_connected():
             cursor.close()
             conn.close()
 
-# ===== RUTA: Actualizar expediente =====
-@app.route('/expedientes/update/<int:id>', methods=['POST'])
-def update_expediente(id):
-    try:
-        paciente_id = request.form['paciente_id']
-        diagnostico = request.form['diagnostico']
-        
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
-        cursor.execute(
-            "UPDATE expedientes SET paciente_id = %s, diagnostico = %s WHERE id = %s",
-            (paciente_id, diagnostico, id)
-        )
-        conn.commit()
-        
-        flash('Expediente actualizado exitosamente', 'success')
-        return redirect(url_for('expedientes'))
-        
-    except mysql.connector.Error as err:
-        flash(f'Error al actualizar expediente: {err}', 'danger')
-        return redirect(url_for('editar_expediente', id=id))
-        
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
-
-# ===== RUTA: Eliminar expediente =====
-@app.route('/expedientes/eliminar/<int:id>', methods=['POST'])
-def eliminar_expediente(id):
-    try:
-        conn = mysql.connector.connect(**db_config)
-        cursor = conn.cursor()
-        cursor.execute("UPDATE expedientes SET deleted = 1 WHERE id = %s", (id,))
-        conn.commit()
-        
-        flash('Expediente eliminado exitosamente', 'success')
-        return redirect(url_for('expedientes'))
-        
-    except mysql.connector.Error as err:
-        flash(f'Error al eliminar expediente: {err}', 'danger')
-        return redirect(url_for('expedientes'))
-        
-    finally:
-        if conn.is_connected():
-            cursor.close()
-            conn.close()
-            
 @app.template_filter('formato_fecha_input')
 def formato_fecha_input(value):
     """Convierte fecha a formato YYYY-MM-DD para campos input type=date"""
@@ -272,11 +171,14 @@ def formato_fecha_input(value):
 
 # Ruta citas - Modificada para manejar errores y datos del formulario
 @app.route('/citas')
+@login_required
 def citas():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
+    
+    # Consulta modificada: Añade C.id_paciente y C.id_medico
     cursor.execute("""
-        SELECT C.id_cita,
+        SELECT C.id_cita, C.id_paciente, C.id_medico,
                CONCAT(P.nombres, ' ', P.apellidos) AS nombre_paciente,
                CONCAT(M.primer_nombre, ' ', M.apellido_paterno) AS nombre_medico,
                C.fecha, C.hora, C.motivo, C.estatus
@@ -288,33 +190,40 @@ def citas():
     citas = cursor.fetchall()
 
     cursor.execute("""
-    SELECT id_paciente, CONCAT(nombres, ' ', apellidos) AS nombre_completo 
-    FROM Pacientes 
-    WHERE estatus = 1
-""")
+        SELECT id_paciente, CONCAT(nombres, ' ', apellidos) AS nombre_completo 
+        FROM Pacientes 
+        WHERE estatus = 1
+    """)
     pacientes = cursor.fetchall()
 
     cursor.execute("""
-    SELECT id_medico, CONCAT(primer_nombre, ' ', apellido_paterno) AS nombre_completo 
-    FROM Medicos 
-    WHERE estatus = 1
-""")
+        SELECT id_medico, CONCAT(primer_nombre, ' ', apellido_paterno) AS nombre_completo 
+        FROM Medicos 
+        WHERE estatus = 1
+    """)
     medicos = cursor.fetchall()
 
     cursor.close()
     conn.close()
-    
-    # Obtener datos del formulario de la sesión si existen
-    form_data = session.pop('form_data', {})
-    errors = session.pop('errors', {})
-    
-    return render_template('citas.html', 
-                          citas=citas, 
-                          pacientes=pacientes, 
-                          medicos=medicos, 
-                          errors=errors,
-                          form_data=form_data)
 
+    # Recuperar datos del formulario si existe en la sesión
+    form_data = session.pop('form_data', None) or {}
+    modo_edicion = 'id_cita' in form_data
+    
+    # Recuperar errores si existen
+    errors = session.pop('errors', None) or {}
+    
+    return render_template(
+        'citas.html',
+        citas=citas,
+        pacientes=pacientes,
+        medicos=medicos,
+        form_data=form_data,
+        modo_edicion=modo_edicion,
+        errors=errors
+    )
+    # Obtener datos del formulario de la sesión si existen
+    
 # Agregar cita - Modificada para manejar errores y datos del formulario
 @app.route('/agregar_cita', methods=['POST'])
 def agregar_cita():
@@ -684,7 +593,8 @@ def medicos():
             rfc = request.form.get('rfc', '').strip()
             telefono = request.form.get('telefono', '').strip()
             centro_medico = request.form.get('centro_medico', '').strip()
-
+            contrasena = request.form.get('contrasena', '').strip()
+            confirmar_contrasena = request.form.get('confirmar_contrasena', '').strip()
             
             if not primer_nombre:
                 errores['primer_nombre'] = 'Nombre obligatorio'
@@ -700,6 +610,14 @@ def medicos():
                 errores['rfc'] = 'RFC obligatorio'
             if not telefono:
                 errores['telefono'] = 'Telefono Obligatorio'
+                
+            if not contrasena:
+                errores['contrasena'] = 'La contraseña es obligatoria'
+            elif len(contrasena) < 8:
+                errores['contrasena'] = 'La contraseña debe tener al menos 8 caracteres'
+    
+            if contrasena != confirmar_contrasena:
+                errores['confirmar_contrasena'] = 'Las contraseñas no coinciden'
 
             if errores:
                 
@@ -712,7 +630,6 @@ def medicos():
                     form_data_med=request.form
                 )
 
-           
             cursor.execute(
                 "INSERT INTO usuarios (rfc, contrasena, privilegio) "
                 "VALUES (%s, SHA2('temp_password', 256), 1)",
@@ -721,10 +638,10 @@ def medicos():
             cursor.execute(
                 """INSERT INTO medicos
                    (primer_nombre, segundo_nombre, apellido_paterno, apellido_materno,
-                    cedula_profesional, especialidad, correo, rfc, telefono, centro_medico)
-                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+                    cedula_profesional, especialidad, correo, rfc, telefono, centro_medico,contrasena)
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
                 (primer_nombre, segundo_nombre, apellido_paterno, apellido_materno,
-                 cedula_profesional, especialidad, correo, rfc, telefono, centro_medico)
+                 cedula_profesional, especialidad, correo, rfc, telefono, centro_medico,contrasena)
             )
             conn.commit()
             flash('Médico registrado exitosamente', 'success')
@@ -810,7 +727,7 @@ def ver_paciente(id_paciente):
 
     return render_template("ver_paciente.html", paciente=paciente)
 
-# Ruta para mostrar formulario de exploración (redirige a edición si ya existe)
+# Ruta para mostrar formulario de exploración 
 @app.route('/exploracion/<int:id_cita>')
 @login_required
 def exploracion(id_cita):
@@ -854,11 +771,9 @@ def exploracion(id_cita):
     
     return render_template('exploracion.html', cita=cita, edad=edad, fecha_actual=hoy.strftime('%d/%m/%Y'))
 
-# Ruta para crear nueva exploración
 @app.route('/crear_exploracion/<int:id_cita>', methods=['POST'])
 @login_required
 def crear_exploracion(id_cita):
-    # Obtener datos del formulario
     datos = {
         'peso': request.form.get('peso'),
         'altura': request.form.get('altura'),
@@ -871,21 +786,20 @@ def crear_exploracion(id_cita):
         'tratamiento': request.form.get('tratamiento'),
         'estudios': request.form.get('estudios'),
     }
-    
+
     conn = get_db_connection()
     cursor = conn.cursor()
-    
-    # Obtener id_paciente e id_medico de la cita
+
     cursor.execute("SELECT id_paciente, id_medico FROM Cita WHERE id_cita = %s", (id_cita,))
     cita = cursor.fetchone()
-    
+
     if not cita:
         flash('Cita no encontrada', 'danger')
+        conn.close()
         return redirect(url_for('citas'))
-    
+
     id_paciente, id_medico = cita
-    
-    # Insertar exploración
+
     cursor.execute("""
         INSERT INTO Exploracion (
             id_cita, id_paciente, id_medico, fecha,
@@ -894,18 +808,79 @@ def crear_exploracion(id_cita):
         ) VALUES (%s, %s, %s, CURDATE(), %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 1)
     """, (
         id_cita, id_paciente, id_medico,
-        datos['peso'], datos['altura'], datos['temperatura'], datos['latidos_minuto'], 
-        datos['saturacion_oxigeno'], datos['glucosa'], datos['sintomas'], 
+        datos['peso'], datos['altura'], datos['temperatura'], datos['latidos_minuto'],
+        datos['saturacion_oxigeno'], datos['glucosa'], datos['sintomas'],
         datos['diagnostico'], datos['tratamiento'], datos['estudios']
     ))
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
-    
-    flash('Exploración creada exitosamente', 'success')
-    return redirect(url_for('gestion_exploraciones'))
 
+    conn.commit()
+    id_exploracion = cursor.lastrowid
+
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT E.*, 
+               CONCAT(P.nombres, ' ', P.apellidos) AS nombre_paciente,
+               P.fecha_nacimiento,
+               CONCAT(M.primer_nombre, ' ', M.apellido_paterno) AS nombre_medico
+        FROM Exploracion E
+        JOIN Pacientes P ON E.id_paciente = P.id_paciente
+        JOIN Medicos M ON E.id_medico = M.id_medico
+        WHERE E.id_exploracion = %s
+    """, (id_exploracion,))
+    exploracion = cursor.fetchone()
+    conn.close()
+
+    fecha_exploracion = exploracion['fecha']
+    fecha_nac = exploracion['fecha_nacimiento']
+    edad = fecha_exploracion.year - fecha_nac.year - (
+        (fecha_exploracion.month, fecha_exploracion.day) < (fecha_nac.month, fecha_nac.day)
+    )
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=18)
+    elements = []
+    styles = getSampleStyleSheet()
+    styles.add(ParagraphStyle(name='Center', alignment=1))
+
+    elements.append(Paragraph("<b>MedicalCenter</b>", styles['Center']))
+    elements.append(Spacer(1, 24))
+    elements.append(Paragraph("Receta Medica", styles['Title']))
+    elements.append(Spacer(1, 12))
+    elements.append(Paragraph(f"<b>Paciente:</b> {exploracion['nombre_paciente']}", styles['Normal']))
+    elements.append(Paragraph(f"<b>Edad:</b> {edad} años", styles['Normal']))
+    elements.append(Paragraph(f"<b>Fecha:</b> {exploracion['fecha'].strftime('%d/%m/%Y')}", styles['Normal']))
+    elements.append(Paragraph(f"<b>Médico:</b> {exploracion['nombre_medico']}", styles['Normal']))
+    elements.append(Spacer(1, 12))
+
+    data = [
+        ['Peso (kg)', exploracion['peso'] or 'N/A'],
+        ['Altura (cm)', exploracion['altura'] or 'N/A'],
+        ['Temperatura (°C)', exploracion['temperatura'] or 'N/A'],
+        ['Latidos/min', exploracion['latidos_minuto'] or 'N/A'],
+        ['Saturación (%)', exploracion['saturacion_oxigeno'] or 'N/A'],
+        ['Glucosa (mg/dL)', exploracion['glucosa'] or 'N/A']
+    ]
+    table = Table(data, colWidths=[200, 200])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.grey),
+        ('TEXTCOLOR', (0,0), (-1,0), colors.whitesmoke),
+        ('GRID', (0,0), (-1,-1), 1, colors.black),
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+    ]))
+    elements.append(table)
+    elements.append(Spacer(1, 12))
+
+    elements.append(Paragraph(f"<b>Síntomas:</b> {exploracion['sintomas'] or 'Ninguno'}", styles['Normal']))
+    elements.append(Paragraph(f"<b>Diagnóstico:</b> {exploracion['diagnostico'] or 'Ninguno'}", styles['Normal']))
+    elements.append(Paragraph(f"<b>Tratamiento:</b> {exploracion['tratamiento'] or 'Ninguno'}", styles['Normal']))
+    elements.append(Paragraph(f"<b>Estudios:</b> {exploracion['estudios'] or 'Ninguno'}", styles['Normal']))
+
+    doc.build(elements)
+    buffer.seek(0)
+
+    return send_file(buffer, as_attachment=True,
+                     download_name=f"reporte_exploracion_{id_exploracion}.pdf",
+                     mimetype='application/pdf')
 # Ruta para editar exploración
 @app.route('/editar_exploracion/<int:id_exploracion>', methods=['GET', 'POST'])
 @login_required
@@ -1045,139 +1020,6 @@ def eliminar_exploracion(id_exploracion):
     
     flash('Exploración eliminada exitosamente', 'success')
     return redirect(url_for('gestion_exploraciones'))
-
-@app.route('/reportes')
-@login_required
-def reportes():
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    
-    # Obtener todas las exploraciones activas con datos de paciente
-    cursor.execute("""
-        SELECT E.id_exploracion, E.fecha, 
-               CONCAT(P.nombres, ' ', P.apellidos) AS nombre_paciente
-        FROM Exploracion E
-        JOIN Pacientes P ON E.id_paciente = P.id_paciente
-        WHERE E.estatus = 1
-        ORDER BY E.fecha DESC
-    """)
-    exploraciones = cursor.fetchall()
-    
-    cursor.close()
-    conn.close()
-    
-    return render_template('reportes.html', exploraciones=exploraciones)
-
-@app.route('/generar_reporte/<int:id_exploracion>')
-@login_required
-def generar_reporte(id_exploracion):
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    
-    # Obtener datos completos de la exploración
-    cursor.execute("""
-        SELECT E.*, 
-               CONCAT(P.nombres, ' ', P.apellidos) AS nombre_paciente,
-               P.fecha_nacimiento,
-               CONCAT(M.primer_nombre, ' ', M.apellido_paterno) AS nombre_medico
-        FROM Exploracion E
-        JOIN Pacientes P ON E.id_paciente = P.id_paciente
-        JOIN Medicos M ON E.id_medico = M.id_medico
-        WHERE E.id_exploracion = %s
-    """, (id_exploracion,))
-    exploracion = cursor.fetchone()
-    
-    if not exploracion:
-        flash('Exploración no encontrada', 'danger')
-        return redirect(url_for('reportes'))
-    
-    # Calcular edad del paciente en el momento de la exploración
-    fecha_exploracion = exploracion['fecha']
-    fecha_nac = exploracion['fecha_nacimiento']
-    edad = fecha_exploracion.year - fecha_nac.year - ((fecha_exploracion.month, fecha_exploracion.day) < (fecha_nac.month, fecha_nac.day))
-    
-    cursor.close()
-    conn.close()
-    
-    # Crear el PDF en memoria
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=letter, rightMargin=72, leftMargin=72, topMargin=72, bottomMargin=18)
-    elements = []
-    
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name='Center', alignment=1))
-    styles.add(ParagraphStyle(name='Right', alignment=2))
-    
-    # Logo y encabezado
-    elements.append(Paragraph("<font size=14 color=navy><b>MedicalCenter</b></font>", styles['Center']))
-    elements.append(Paragraph("Sistema de Gestión Médica", styles['Center']))
-    elements.append(Spacer(1, 24))
-    
-    # Título
-    elements.append(Paragraph("REPORTE DE EXPLORACIÓN MÉDICA", styles['Title']))
-    elements.append(Spacer(1, 12))
-    
-    # Información del paciente
-    elements.append(Paragraph(f"<b>Paciente:</b> {exploracion['nombre_paciente']}", styles['Normal']))
-    elements.append(Paragraph(f"<b>Edad al momento de la exploración:</b> {edad} años", styles['Normal']))
-    elements.append(Paragraph(f"<b>Fecha de exploración:</b> {exploracion['fecha'].strftime('%d/%m/%Y')}", styles['Normal']))
-    elements.append(Paragraph(f"<b>Médico responsable:</b> {exploracion['nombre_medico']}", styles['Normal']))
-    elements.append(Spacer(1, 24))
-    
-    # Signos vitales
-    elements.append(Paragraph("<b>Resultados</b>", styles['Heading2']))
-    data = [
-        ['Parámetro', 'Valor'],
-        ['Peso (kg)', exploracion['peso'] or 'N/A'],
-        ['Altura (cm)', exploracion['altura'] or 'N/A'],
-        ['Temperatura (°C)', exploracion['temperatura'] or 'N/A'],
-        ['Latidos por minuto', exploracion['latidos_minuto'] or 'N/A'],
-        ['Saturación de oxígeno (%)', exploracion['saturacion_oxigeno'] or 'N/A'],
-        ['Glucosa (mg/dL)', exploracion['glucosa'] or 'N/A']
-    ]
-    table = Table(data, colWidths=[200, 200])
-    table.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#1e5799')),
-        ('TEXTCOLOR', (0,0), (-1,0), colors.whitesmoke),
-        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-        ('FONT', (0,0), (-1,0), 'Helvetica-Bold', 10),
-        ('FONT', (0,1), (-1,-1), 'Helvetica', 10),
-        ('GRID', (0,0), (-1,-1), 1, colors.HexColor('#cccccc'))
-    ]))
-    elements.append(table)
-    elements.append(Spacer(1, 24))
-    
-    # Evaluación médica
-    elements.append(Paragraph("<b>EVALUACIÓN MÉDICA</b>", styles['Heading2']))
-    elements.append(Spacer(1, 8))
-    
-    elements.append(Paragraph("<b>Síntomas:</b>", styles['Normal']))
-    elements.append(Paragraph(exploracion['sintomas'] or 'Ninguno registrado', styles['Normal']))
-    elements.append(Spacer(1, 12))
-    
-    elements.append(Paragraph("<b>Diagnóstico:</b>", styles['Normal']))
-    elements.append(Paragraph(exploracion['diagnostico'] or 'Ninguno registrado', styles['Normal']))
-    elements.append(Spacer(1, 12))
-    
-    elements.append(Paragraph("<b>Tratamiento:</b>", styles['Normal']))
-    elements.append(Paragraph(exploracion['tratamiento'] or 'Ninguno registrado', styles['Normal']))
-    elements.append(Spacer(1, 12))
-    
-    elements.append(Paragraph("<b>Estudios solicitados:</b>", styles['Normal']))
-    elements.append(Paragraph(exploracion['estudios'] or 'Ninguno registrado', styles['Normal']))
-    elements.append(Spacer(1, 24))
-    
-    # Firma
-    elements.append(Paragraph("___________________________", styles['Center']))
-    elements.append(Paragraph(f"{exploracion['nombre_medico']}", styles['Center']))
-    elements.append(Paragraph("Médico responsable", styles['Center']))
-    
-    # Generar PDF
-    doc.build(elements)
-    
-    buffer.seek(0)
-    return send_file(buffer, as_attachment=True, download_name=f"reporte_exploracion_{id_exploracion}.pdf", mimetype='application/pdf')
-
 @app.template_filter('format_fecha')
 def format_fecha(value):
     if value is None:

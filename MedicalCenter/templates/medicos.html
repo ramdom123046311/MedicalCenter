@@ -63,11 +63,6 @@
                                 <i class="fas fa-file-medical me-2"></i>Expedientes
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('reportes') }}">
-                                <i class="fas fa-chart-bar me-2"></i>Reportes
-                            </a>
-                        </li>
                     </ul>
                 </div>
             
@@ -223,6 +218,24 @@
               {% endif %}
             </div>
           </div>
+
+           <div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Contraseña</label>
+        <input type="password" name="contrasena" class="form-control" required>
+        {% if errores_med and errores_med.contrasena %}
+            <small class="text-danger">{{ errores_med.contrasena }}</small>
+        {% endif %}
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <label class="form-label">Confirmar Contraseña</label>
+        <input type="password" name="confirmar_contrasena" class="form-control" required>
+        {% if errores_med and errores_med.confirmar_contrasena %}
+            <small class="text-danger">{{ errores_med.confirmar_contrasena }}</small>
+              {% endif %}
+            </div>
+         </div>
 
           <!-- Cédula y teléfono -->
           <div class="row">
